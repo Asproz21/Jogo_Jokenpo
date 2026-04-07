@@ -1,289 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Jokenpo Steampunk</title>
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--font-sans)}
-#app{min-height:520px;display:flex;flex-direction:column;align-items:center;padding:1.5rem 1rem}
-.screen{width:100%;max-width:560px;display:none;flex-direction:column;align-items:center;gap:1rem}
+
+body{
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(#2b1d13,#1a120d);
+  color:#f5e6c8;
+}
+
+#app{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+
+.screen{display:none;flex-direction:column;align-items:center;gap:1rem}
 .screen.active{display:flex}
-.arena{width:100%;height:180px;position:relative;border-radius:var(--border-radius-lg);overflow:hidden;margin:0.5rem 0}
-.sky{position:absolute;inset:0;background:#c9e8f7}
-.ground{position:absolute;bottom:0;left:0;right:0;height:60px;background:#7cb87e;border-radius:0}
-.grass-line{position:absolute;bottom:58px;left:0;right:0;height:4px;background:#5a9e5c}
-.cloud{position:absolute;background:#fff;border-radius:50px;opacity:.85}
-.c1{width:60px;height:20px;top:22px;left:40px}
-.c2{width:40px;height:14px;top:18px;left:60px}
-.c3{width:80px;height:22px;top:30px;left:200px}
-.c4{width:50px;height:16px;top:26px;left:220px}
-.c5{width:55px;height:18px;top:20px;right:60px}
-.mountain{position:absolute;bottom:58px;width:0;height:0;border-style:solid}
-.m1{border-width:0 50px 70px 50px;border-color:transparent transparent #8aab8c transparent;right:80px}
-.m2{border-width:0 35px 50px 35px;border-color:transparent transparent #6b9c73 transparent;right:110px}
-.sun{position:absolute;width:32px;height:32px;background:#f5c842;border-radius:50%;top:12px;right:30px}
-.player-sprite{position:absolute;bottom:60px;transition:all .3s ease;cursor:default}
-.p1-pos{left:40px}
-.p2-pos{right:40px}
-.sprite-body{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px}
-.sprite-shadow{width:20px;height:5px;border-radius:50%;background:rgba(0,0,0,.15);margin:0 auto;margin-top:1px}
-.sprite-label{font-size:10px;font-weight:500;text-align:center;color:#333;margin-top:2px;max-width:60px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.badge{display:inline-block;font-size:10px;font-weight:500;padding:2px 8px;border-radius:99px;background:var(--color-background-info);color:var(--color-text-info)}
-.badge-success{background:var(--color-background-success);color:var(--color-text-success)}
-.badge-warning{background:var(--color-background-warning);color:var(--color-text-warning)}
-.score-row{display:flex;gap:2rem;align-items:center;justify-content:center}
-.score-card{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:.6rem 1.2rem;text-align:center;min-width:90px}
-.score-name{font-size:11px;color:var(--color-text-secondary);margin-bottom:2px;max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.score-num{font-size:22px;font-weight:500;color:var(--color-text-primary)}
-.vs-dot{font-size:13px;color:var(--color-text-tertiary)}
-.choices{display:flex;gap:.75rem;justify-content:center;width:100%}
-.choice-btn{flex:1;max-width:120px;background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:.7rem .5rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;transition:border-color .15s,background .15s}
-.choice-btn:hover{background:var(--color-background-secondary);border-color:var(--color-border-primary)}
-.choice-btn.selected{border:2px solid var(--color-border-info);background:var(--color-background-info)}
-.choice-icon{font-size:22px}
-.choice-label{font-size:11px;color:var(--color-text-secondary)}
-.turn-label{font-size:13px;color:var(--color-text-secondary);text-align:center}
-.result-bubble{background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:.75rem 1.25rem;text-align:center;font-size:14px;color:var(--color-text-primary);width:100%}
-.btn-primary{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:.55rem 1.2rem;font-size:13px;cursor:pointer;color:var(--color-text-primary);transition:background .15s}
-.btn-primary:hover{background:var(--color-background-secondary)}
-.name-input-group{width:100%;max-width:320px;display:flex;flex-direction:column;gap:.5rem}
-.name-input-group label{font-size:12px;color:var(--color-text-secondary)}
-.setup-card{background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:1.25rem 1.5rem;width:100%;max-width:320px;display:flex;flex-direction:column;gap:1rem}
-.game-title{font-size:18px;font-weight:500;color:var(--color-text-primary);text-align:center}
-.subtitle{font-size:12px;color:var(--color-text-secondary);text-align:center}
-.confetti-row{font-size:20px;letter-spacing:4px;text-align:center}
-.action-row{display:flex;gap:.5rem;justify-content:center}
-.error-msg{font-size:11px;color:var(--color-text-danger)}
-.hidden-choice{width:22px;height:22px;border-radius:50%;background:var(--color-border-secondary);display:inline-block;vertical-align:middle}
+
+.game-title{
+  font-size:26px;
+  color:#d4a373;
+}
+
+.arena{
+  width:350px;
+  height:180px;
+  border-radius:12px;
+  background:#1b120c;
+  border:2px solid #8c6239;
+  position:relative;
+}
+
+.gear{
+  position:absolute;
+  font-size:30px;
+  opacity:.2;
+  animation:spin 10s linear infinite;
+}
+
+@keyframes spin{
+  from{transform:rotate(0)}
+  to{transform:rotate(360deg)}
+}
+
+.g1{top:10px;left:10px}
+.g2{bottom:10px;right:10px}
+
+.player{
+  position:absolute;
+  bottom:20px;
+  text-align:center;
+}
+
+.p1{left:40px}
+.p2{right:40px}
+
+.sprite{font-size:32px}
+
+button{
+  background:#8c6239;
+  border:none;
+  padding:10px;
+  border-radius:8px;
+  cursor:pointer;
+  color:white;
+}
+
+button:hover{background:#b08968}
+
+.choices{
+  display:flex;
+  gap:10px;
+}
+
+.choice{
+  background:#3a2a1c;
+  padding:10px;
+  border-radius:10px;
+  font-size:20px;
+  cursor:pointer;
+}
+
+.choice.selected{
+  border:2px solid gold;
+}
+
+.winner{animation:bounce .6s infinite}
+@keyframes bounce{
+  50%{transform:translateY(-10px)}
+}
+
+.loser{opacity:.4}
+
+input{
+  padding:8px;
+  border-radius:6px;
+  border:none;
+}
 </style>
+</head>
+
+<body>
 
 <div id="app">
 
-  <div id="screen-setup" class="screen active">
-    <div style="height:1rem"></div>
-    <div class="game-title">Pedra, Papel, Tesoura</div>
-    <div class="subtitle">Arena 2D — dois jogadores, uma vitória</div>
-    <div class="arena">
-      <div class="sky"></div>
-      <div class="cloud c1"></div><div class="cloud c2"></div>
-      <div class="cloud c3"></div><div class="cloud c4"></div>
-      <div class="cloud c5"></div>
-      <div class="sun"></div>
-      <div class="mountain m1"></div><div class="mountain m2"></div>
-      <div class="ground"></div>
-      <div class="grass-line"></div>
-      <div class="player-sprite p1-pos">
-        <div class="sprite-body" style="background:#5b8dd9;color:#fff">🧍</div>
-        <div class="sprite-shadow"></div>
-        <div class="sprite-label" style="color:#2a5299">Jogador 1</div>
-      </div>
-      <div class="player-sprite p2-pos">
-        <div class="sprite-body" style="background:#d96b5b;color:#fff">🧍</div>
-        <div class="sprite-shadow"></div>
-        <div class="sprite-label" style="color:#9b3427">Jogador 2</div>
-      </div>
-    </div>
-    <div class="setup-card">
-      <div class="name-input-group">
-        <label>Nome do Jogador 1</label>
-        <input id="name1" type="text" placeholder="Ex: Ana" maxlength="14"/>
-      </div>
-      <div class="name-input-group">
-        <label>Nome do Jogador 2</label>
-        <input id="name2" type="text" placeholder="Ex: Bruno" maxlength="14"/>
-      </div>
-      <div id="setup-error" class="error-msg" style="display:none">Preencha os dois nomes para continuar.</div>
-      <button class="btn-primary" onclick="startGame()" style="width:100%;font-weight:500">Entrar na arena ↗</button>
-    </div>
+<!-- SETUP -->
+<div id="setup" class="screen active">
+  <div class="game-title">⚙️ Jokenpo Steampunk ⚙️</div>
+
+  <input id="n1" placeholder="Jogador 1">
+
+  <div>
+    <button onclick="modeCPU()">Vs CPU 🤖</button>
+    <button onclick="modePVP()">2 Jogadores 👥</button>
   </div>
 
-  <div id="screen-p1" class="screen">
-    <div class="game-title" id="title-p1"></div>
-    <div class="subtitle" id="subtitle-p1">Escolha em segredo — o adversário não pode ver!</div>
-    <div class="arena" id="arena-p1">
-      <div class="sky"></div>
-      <div class="cloud c1"></div><div class="cloud c3"></div><div class="cloud c5"></div>
-      <div class="sun"></div>
-      <div class="mountain m1"></div><div class="mountain m2"></div>
-      <div class="ground"></div><div class="grass-line"></div>
-      <div class="player-sprite p1-pos" id="sp1">
-        <div class="sprite-body" style="background:#5b8dd9;color:#fff">🧍</div>
-        <div class="sprite-shadow"></div>
-        <div class="sprite-label" id="sp1-label" style="color:#2a5299"></div>
-      </div>
-    </div>
-    <div class="choices" id="choices-p1"></div>
-    <div id="p1-error" class="error-msg" style="display:none">Escolha uma opção antes de continuar.</div>
-    <button class="btn-primary" onclick="confirmP1()">Confirmar escolha</button>
+  <input id="n2" placeholder="Jogador 2 (se PVP)">
+  
+  <button onclick="start()">Iniciar</button>
+</div>
+
+<!-- GAME -->
+<div id="game" class="screen">
+
+<div class="arena">
+  <div class="gear g1">⚙️</div>
+  <div class="gear g2">⚙️</div>
+
+  <div class="player p1">
+    <div id="s1" class="sprite">❔</div>
+    <div id="name1"></div>
   </div>
 
-  <div id="screen-p2" class="screen">
-    <div class="game-title" id="title-p2"></div>
-    <div class="subtitle">Vez do adversário — sem espiar!</div>
-    <div class="arena">
-      <div class="sky"></div>
-      <div class="cloud c1"></div><div class="cloud c3"></div><div class="cloud c5"></div>
-      <div class="sun"></div>
-      <div class="mountain m1"></div><div class="mountain m2"></div>
-      <div class="ground"></div><div class="grass-line"></div>
-      <div class="player-sprite p2-pos">
-        <div class="sprite-body" style="background:#d96b5b;color:#fff">🧍</div>
-        <div class="sprite-shadow"></div>
-        <div class="sprite-label" id="sp2-label" style="color:#9b3427"></div>
-      </div>
-    </div>
-    <div class="choices" id="choices-p2"></div>
-    <div id="p2-error" class="error-msg" style="display:none">Escolha uma opção antes de continuar.</div>
-    <button class="btn-primary" onclick="confirmP2()">Confirmar escolha</button>
+  <div class="player p2">
+    <div id="s2" class="sprite">❔</div>
+    <div id="name2"></div>
   </div>
+</div>
 
-  <div id="screen-result" class="screen">
-    <div class="game-title">Resultado</div>
-    <div class="arena" id="arena-result">
-      <div class="sky"></div>
-      <div class="cloud c1"></div><div class="cloud c3"></div><div class="cloud c5"></div>
-      <div class="sun"></div>
-      <div class="mountain m1"></div><div class="mountain m2"></div>
-      <div class="ground"></div><div class="grass-line"></div>
-      <div class="player-sprite p1-pos" id="rsp1">
-        <div class="sprite-body" id="rb1" style="background:#5b8dd9;color:#fff;font-size:15px"></div>
-        <div class="sprite-shadow"></div>
-        <div class="sprite-label" id="rl1" style="color:#2a5299"></div>
-      </div>
-      <div class="player-sprite p2-pos" id="rsp2">
-        <div class="sprite-body" id="rb2" style="background:#d96b5b;color:#fff;font-size:15px"></div>
-        <div class="sprite-shadow"></div>
-        <div class="sprite-label" id="rl2" style="color:#9b3427"></div>
-      </div>
-    </div>
-    <div id="confetti" class="confetti-row" style="display:none"></div>
-    <div class="result-bubble" id="result-text"></div>
-    <div class="score-row">
-      <div class="score-card">
-        <div class="score-name" id="sn1"></div>
-        <div class="score-num" id="sv1">0</div>
-      </div>
-      <div class="vs-dot">vs</div>
-      <div class="score-card">
-        <div class="score-name" id="sn2"></div>
-        <div class="score-num" id="sv2">0</div>
-      </div>
-    </div>
-    <div class="action-row">
-      <button class="btn-primary" onclick="nextRound()">Jogar novamente</button>
-      <button class="btn-primary" onclick="resetGame()">Recomeçar</button>
-    </div>
-  </div>
+<div class="choices" id="choices"></div>
+
+<button onclick="confirm()">Confirmar</button>
+
+<div id="msg"></div>
+<div id="score"></div>
 
 </div>
 
+</div>
+
+<audio id="win" src="https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3"></audio>
+
 <script>
-const OPTIONS=[{id:"pedra",icon:"🪨",label:"Pedra"},{id:"papel",icon:"📄",label:"Papel"},{id:"tesoura",icon:"✂️",label:"Tesoura"}];
-let name1="",name2="",score1=0,score2=0,choice1=null,choice2=null;
+const OPT=[
+ {id:"pedra",icon:"🪨"},
+ {id:"papel",icon:"📄"},
+ {id:"tesoura",icon:"✂️"}
+];
+
+let mode="cpu";
+let turn=1;
+let c1=null,c2=null;
+let s1=0,s2=0;
+let n1="",n2="CPU";
+
+function modeCPU(){
+ mode="cpu";
+ document.getElementById("n2").style.display="none";
+}
+
+function modePVP(){
+ mode="pvp";
+ document.getElementById("n2").style.display="block";
+}
 
 function show(id){
-  document.querySelectorAll(".screen").forEach(s=>{s.classList.remove("active")});
-  document.getElementById(id).classList.add("active");
+ document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
 }
 
-function startGame(){
-  const n1=document.getElementById("name1").value.trim();
-  const n2=document.getElementById("name2").value.trim();
-  if(!n1||!n2){document.getElementById("setup-error").style.display="block";return;}
-  document.getElementById("setup-error").style.display="none";
-  name1=n1;name2=n2;score1=0;score2=0;
-  document.querySelector("#sp1-label").textContent=name1;
-  document.querySelector("#sp2-label").textContent=name2;
-  document.getElementById("title-p1").textContent=name1+", sua vez!";
-  document.getElementById("title-p2").textContent=name2+", sua vez!";
-  document.getElementById("sn1").textContent=name1;
-  document.getElementById("sn2").textContent=name2;
-  document.getElementById("rl1").textContent=name1;
-  document.getElementById("rl2").textContent=name2;
-  buildChoices("choices-p1","p1");
-  buildChoices("choices-p2","p2");
-  choice1=null;choice2=null;
-  show("screen-p1");
+function start(){
+ n1=document.getElementById("n1").value;
+ if(!n1){alert("Digite nome");return;}
+
+ if(mode==="pvp"){
+  n2=document.getElementById("n2").value;
+  if(!n2){alert("Digite nome 2");return;}
+ }else{
+  n2="CPU 🤖";
+ }
+
+ document.getElementById("name1").innerText=n1;
+ document.getElementById("name2").innerText=n2;
+
+ build();
+ show("game");
 }
 
-function buildChoices(containerId,player){
-  const c=document.getElementById(containerId);
-  c.innerHTML="";
-  OPTIONS.forEach(o=>{
-    const btn=document.createElement("button");
-    btn.className="choice-btn";
-    btn.innerHTML=`<span class="choice-icon">${o.icon}</span><span class="choice-label">${o.label}</span>`;
-    btn.onclick=()=>{
-      c.querySelectorAll(".choice-btn").forEach(b=>b.classList.remove("selected"));
-      btn.classList.add("selected");
-      if(player==="p1")choice1=o.id;
-      else choice2=o.id;
-      document.getElementById(player==="p1"?"p1-error":"p2-error").style.display="none";
-    };
-    c.appendChild(btn);
-  });
+function build(){
+ const div=document.getElementById("choices");
+ div.innerHTML="";
+
+ OPT.forEach(o=>{
+  let b=document.createElement("div");
+  b.className="choice";
+  b.innerText=o.icon;
+
+  b.onclick=()=>{
+    document.querySelectorAll(".choice").forEach(x=>x.classList.remove("selected"));
+    b.classList.add("selected");
+
+    if(turn==1)c1=o.id;
+    else c2=o.id;
+  };
+
+  div.appendChild(b);
+ });
 }
 
-function confirmP1(){
-  if(!choice1){document.getElementById("p1-error").style.display="block";return;}
-  document.getElementById("p1-error").style.display="none";
-  document.getElementById("title-p2").textContent=name2+", sua vez!";
-  document.querySelectorAll("#choices-p2 .choice-btn").forEach(b=>b.classList.remove("selected"));
-  choice2=null;
-  show("screen-p2");
+function confirm(){
+ if(!c1)return;
+
+ if(mode==="cpu"){
+  c2=OPT[Math.floor(Math.random()*3)].id;
+  result();
+  return;
+ }
+
+ if(turn==1){
+  turn=2;
+  document.getElementById("msg").innerText=n2+" joga agora";
+ }else{
+  result();
+ }
 }
 
-function confirmP2(){
-  if(!choice2){document.getElementById("p2-error").style.display="block";return;}
-  document.getElementById("p2-error").style.display="none";
-  showResult();
+function result(){
+ let r=det(c1,c2);
+
+ let el1=document.getElementById("s1");
+ let el2=document.getElementById("s2");
+
+ el1.innerText=OPT.find(o=>o.id==c1).icon;
+ el2.innerText=OPT.find(o=>o.id==c2).icon;
+
+ el1.classList.remove("winner","loser");
+ el2.classList.remove("winner","loser");
+
+ if(r=="p1"){
+  s1++;
+  el1.classList.add("winner");
+  el2.classList.add("loser");
+  document.getElementById("win").play();
+ }
+ else if(r=="p2"){
+  s2++;
+  el2.classList.add("winner");
+  el1.classList.add("loser");
+  document.getElementById("win").play();
+ }
+
+ document.getElementById("score").innerText=
+ `${n1}: ${s1} vs ${n2}: ${s2}`;
+
+ turn=1;
+ c1=null;c2=null;
 }
 
-function determinar(c1,c2){
-  if(c1===c2)return"empate";
-  if((c1==="pedra"&&c2==="tesoura")||(c1==="papel"&&c2==="pedra")||(c1==="tesoura"&&c2==="papel"))return"p1";
-  return"p2";
-}
+function det(a,b){
+ if(a==b)return "empate";
 
-function showResult(){
-  const winner=determinar(choice1,choice2);
-  const ico1=OPTIONS.find(o=>o.id===choice1).icon;
-  const ico2=OPTIONS.find(o=>o.id===choice2).icon;
-  document.getElementById("rb1").textContent=ico1;
-  document.getElementById("rb2").textContent=ico2;
+ if(
+  (a=="pedra"&&b=="tesoura")||
+  (a=="tesoura"&&b=="papel")||
+  (a=="papel"&&b=="pedra")
+ )return "p1";
 
-  const confetti=document.getElementById("confetti");
-  let msg="";
-  if(winner==="empate"){
-    msg="Empate! Nenhum ponto marcado.";
-    confetti.style.display="none";
-    document.getElementById("rsp1").style.opacity="1";
-    document.getElementById("rsp2").style.opacity="1";
-  }else if(winner==="p1"){
-    score1++;msg=`${name1} venceu esta rodada!`;
-    confetti.textContent="🎉 🏆 🎉";confetti.style.display="block";
-    document.getElementById("rsp1").style.opacity="1";
-    document.getElementById("rsp2").style.opacity="0.45";
-  }else{
-    score2++;msg=`${name2} venceu esta rodada!`;
-    confetti.textContent="🎉 🏆 🎉";confetti.style.display="block";
-    document.getElementById("rsp1").style.opacity="0.45";
-    document.getElementById("rsp2").style.opacity="1";
-  }
-  document.getElementById("result-text").textContent=`${name1} jogou ${OPTIONS.find(o=>o.id===choice1).label} · ${name2} jogou ${OPTIONS.find(o=>o.id===choice2).label} — ${msg}`;
-  document.getElementById("sv1").textContent=score1;
-  document.getElementById("sv2").textContent=score2;
-  show("screen-result");
-}
-
-function nextRound(){
-  choice1=null;choice2=null;
-  document.querySelectorAll("#choices-p1 .choice-btn").forEach(b=>b.classList.remove("selected"));
-  document.querySelectorAll("#choices-p2 .choice-btn").forEach(b=>b.classList.remove("selected"));
-  show("screen-p1");
-}
-
-function resetGame(){
-  score1=0;score2=0;choice1=null;choice2=null;
-  document.getElementById("name1").value="";
-  document.getElementById("name2").value="";
-  show("screen-setup");
+ return "p2";
 }
 </script>
+
+</body>
+</html>
